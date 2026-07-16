@@ -9,6 +9,5 @@ Sistema de vendas: PostgreSQL + Flask + Bootstrap + Power BI.
 4. cd app e python app.py
 5. Abrir http://127.0.0.1:5000
 
-Nunca publique o ficheiro .env.
 
 Autora: Thamires Santos
