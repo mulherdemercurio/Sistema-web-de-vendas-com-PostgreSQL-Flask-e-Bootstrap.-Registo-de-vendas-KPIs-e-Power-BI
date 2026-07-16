@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS categorias (id SERIAL PRIMARY KEY, nome VARCHAR(80) NOT NULL UNIQUE);
+CREATE TABLE IF NOT EXISTS regioes (id SERIAL PRIMARY KEY, nome VARCHAR(80) NOT NULL UNIQUE, uf CHAR(2));
+CREATE TABLE IF NOT EXISTS produtos (id SERIAL PRIMARY KEY, sku VARCHAR(40) NOT NULL UNIQUE, nome VARCHAR(160) NOT NULL, categoria_id INTEGER NOT NULL REFERENCES categorias(id), preco_unitario NUMERIC(12,2) NOT NULL, ativo BOOLEAN NOT NULL DEFAULT TRUE);
+CREATE TABLE IF NOT EXISTS vendas_ficticias (id SERIAL PRIMARY KEY, produto_id INTEGER NOT NULL REFERENCES produtos(id), regiao_id INTEGER NOT NULL REFERENCES regioes(id), data_venda DATE NOT NULL, quantidade INTEGER NOT NULL, valor_unitario NUMERIC(12,2) NOT NULL, valor_total NUMERIC(12,2) GENERATED ALWAYS AS (quantidade * valor_unitario) STORED, canal VARCHAR(40) NOT NULL DEFAULT loja, vendedor VARCHAR(120));
+CREATE OR REPLACE VIEW vw_vendas_detalhe AS SELECT v.*, p.nome AS produto, c.nome AS categoria, r.nome AS regiao FROM vendas_ficticias v JOIN produtos p ON p.id=v.produto_id JOIN categorias c ON c.id=p.categoria_id JOIN regioes r ON r.id=v.regiao_id;
